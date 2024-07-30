@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dr81mcco028gm"]
+
+[ext_resource type="Script" path="res://Client/Networking/Client.cs" id="1_kv6bn"]
+
+[node name="Demo" type="Node3D"]
+
+[node name="Client" type="Node" parent="."]
+script = ExtResource("1_kv6bn")
