@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlkos1vs1nbmo"]
+
+[ext_resource type="Script" path="res://Shared/run.gd" id="1_djr7d"]
+
+[node name="Run" type="Node"]
+script = ExtResource("1_djr7d")

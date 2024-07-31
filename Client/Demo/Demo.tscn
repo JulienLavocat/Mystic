@@ -1,8 +1,13 @@
-[gd_scene load_steps=2 format=3 uid="uid://dr81mcco028gm"]
+[gd_scene load_steps=3 format=3 uid="uid://dr81mcco028gm"]
 
 [ext_resource type="Script" path="res://Client/Networking/Client.cs" id="1_kv6bn"]
+[ext_resource type="Script" path="res://Client/Networking/NetworkClock.cs" id="2_hy3uv"]
 
 [node name="Demo" type="Node3D"]
 
-[node name="Client" type="Node" parent="."]
+[node name="Client" type="Node" parent="." node_paths=PackedStringArray("_clock")]
 script = ExtResource("1_kv6bn")
+_clock = NodePath("../Clock")
+
+[node name="Clock" type="Node" parent="."]
+script = ExtResource("2_hy3uv")

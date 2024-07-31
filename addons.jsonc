@@ -1,0 +1,15 @@
+{
+    "$schema": "https://chickensoft.games/schemas/addons.schema.json",
+    "addons": {
+        "imgui-godot": {
+            "url": "https://github.com/pkdawson/imgui-godot",
+            "checkout": "6.x",
+            "subfolder": "addons/imgui-godot"
+        },
+        "multirun": {
+            "url": "https://github.com/xiezi5160/MultirunForGodot4",
+            "subfolder": "addons/multirun",
+            "checkout": "main"
+        }
+    }
+}

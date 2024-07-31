@@ -1,57 +1,65 @@
-using System.Net;
-using System.Net.Sockets;
+using System;
 using Godot;
+using ImGuiNET;
 using LiteNetLib;
+using Mystic.Shared;
 
 namespace Mystic.Server.Networking;
 
 [GlobalClass]
-public partial class Server : Node, INetEventListener
+public partial class Server : Node
 {
-	public static Server Instance { get; private set; }
+    public static Server Instance { get; private set; }
 
-	private NetManager _netManager;
+    [Signal] public delegate void ServerTickEventHandler(int currentTick); 
+    
+    private readonly ServerHost _host = new();
 
-	public override void _Ready()
-	{
-		Instance = this;
-		_netManager = new NetManager(this);
-		_netManager.Start(9050);
-		GD.Print("Server listening on 9050");
-	}
+    [Export]
+    private NetworkClock _clock;
 
-	public override void _Process(double delta)
-	{
-		_netManager.PollEvents();
-	}
+    public override void _EnterTree()
+    {
+        Instance = this;
+    }
 
-	public void OnPeerConnected(NetPeer peer)
-	{
-		GD.Print("Peer connected");
-	}
+    public override void _Ready()
+    {
+        GD.Print("Starting server");
+        _host.Start();
+    }
 
-	public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo) { }
+    public override void _Process(double delta)
+    {
+        _host.Process();
+        DisplayDebugInfo();
+    }
 
-	public void OnNetworkError(IPEndPoint endPoint, SocketError socketError) { }
+    public override void _PhysicsProcess(double delta)
+    {
+        _clock.ProcessTick();
+    }
+    
+    public void SendToClient<T>(int peerId, T packet, LiteNetLib.DeliveryMethod method, byte channel = 0) where T : class, new()
+    {
+        _host.SendToClient(peerId, packet, method, channel);
+    }
 
-	public void OnNetworkReceive(
-		NetPeer peer,
-		NetPacketReader reader,
-		byte channelNumber,
-		DeliveryMethod deliveryMethod
-	) { }
+    public void SubscribeToPacket<T>(Action<T, NetPeer> action) where T : class, new()
+    {
+        _host.SubscribeToPacket(action);
+    }
 
-	public void OnNetworkReceiveUnconnected(
-		IPEndPoint remoteEndPoint,
-		NetPacketReader reader,
-		UnconnectedMessageType messageType
-	) { }
-
-	public void OnNetworkLatencyUpdate(NetPeer peer, int latency) { }
-
-	public void OnConnectionRequest(ConnectionRequest request)
-	{
-		GD.Print("Got connection request");
-		request.Accept();
-	}
+    private void DisplayDebugInfo()
+    {
+        ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero);
+        if (ImGui.Begin("Server", ImGuiWindowFlags.AlwaysAutoResize))
+        {
+            ImGui.Text($"Framerate {Engine.GetFramesPerSecond()}fps");
+            ImGui.Text($"Physics Tick {Engine.PhysicsTicksPerSecond}hz");
+            _host.DrawDebugInfo();
+            _clock.DrawDebugInfo();
+            ImGui.End();
+        }
+    }
 }
