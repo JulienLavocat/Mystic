@@ -65,7 +65,6 @@ namespace Mystic.Client.Networking
         {
             _writer.Reset();
             _packetProcessor.Write(_writer, packet);
-            GD.Print($"{_netManager.FirstPeer.ConnectionState}");
             _netManager.FirstPeer?.Send(_writer, channel, method);
         }
 
