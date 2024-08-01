@@ -11,7 +11,7 @@ public class WorldStatePacket
 public class EntitySnapshot
 {
     public int Id;
+    public float LateralLookAngle;
     public Vector3 Position;
     public Vector3 Velocity;
-    public float LateralLookAngle;
 }

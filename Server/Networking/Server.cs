@@ -1,26 +1,42 @@
-using System;
 using Godot;
 using ImGuiNET;
-using LiteNetLib;
-using Mystic.Shared;
+using Mystic.Server.Character.Player;
+using Vector2 = System.Numerics.Vector2;
+
 
 namespace Mystic.Server.Networking;
 
 [GlobalClass]
 public partial class Server : Node
 {
-    public static Server Instance { get; private set; }
+    [Signal]
+    public delegate void ServerTickEventHandler(int currentTick);
 
-    [Signal] public delegate void ServerTickEventHandler(int currentTick); 
-    
     private readonly ServerHost _host = new();
+    [Export] private Node _actors;
 
-    [Export]
-    private NetworkClock _clock;
+
+    [Export] private NetworkClock _clock;
+
+    public static Server Instance { get; private set; }
+    public static ServerHost Host => Instance._host;
 
     public override void _EnterTree()
     {
         Instance = this;
+        _host.PeerConnectedEvent += peer =>
+        {
+            var actor = new PlayerActor();
+            Actors.LinkToPeer(actor.Id, peer.Id, actor);
+            _actors.AddChild(actor);
+        };
+
+        _host.PeerDisconnectedEvent += (peer, info) =>
+        {
+            if (!Actors.TryGetByPeerId(peer.Id, out var actor)) return;
+            Actors.UnlinkActor(actor.Id, peer.Id);
+            actor.QueueFree();
+        };
     }
 
     public override void _Ready()
@@ -39,27 +55,17 @@ public partial class Server : Node
     {
         _clock.ProcessTick();
     }
-    
-    public void SendToClient<T>(int peerId, T packet, LiteNetLib.DeliveryMethod method, byte channel = 0) where T : class, new()
-    {
-        _host.SendToClient(peerId, packet, method, channel);
-    }
-
-    public void SubscribeToPacket<T>(Action<T, NetPeer> action) where T : class, new()
-    {
-        _host.SubscribeToPacket(action);
-    }
 
     private void DisplayDebugInfo()
     {
-        ImGui.SetNextWindowPos(System.Numerics.Vector2.Zero);
-        if (ImGui.Begin("Server", ImGuiWindowFlags.AlwaysAutoResize))
-        {
-            ImGui.Text($"Framerate {Engine.GetFramesPerSecond()}fps");
-            ImGui.Text($"Physics Tick {Engine.PhysicsTicksPerSecond}hz");
-            _host.DrawDebugInfo();
-            _clock.DrawDebugInfo();
-            ImGui.End();
-        }
+        ImGui.SetNextWindowPos(Vector2.Zero);
+
+        if (!ImGui.Begin("Server", ImGuiWindowFlags.AlwaysAutoResize)) return;
+
+        ImGui.Text($"Framerate {Engine.GetFramesPerSecond()}fps");
+        ImGui.Text($"Physics Tick {Engine.PhysicsTicksPerSecond}hz");
+        _host.DrawDebugInfo();
+        _clock.DrawDebugInfo();
+        ImGui.End();
     }
 }

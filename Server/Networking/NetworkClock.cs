@@ -5,56 +5,57 @@ using Mystic.Shared.Packets;
 
 namespace Mystic.Server.Networking;
 
-public partial class NetworkClock : ServerNode
+public partial class NetworkClock : ActorNode
 {
-	[Signal] public delegate void NetworkProcessTickEventHandler(double delta); 
-	
-	[Export]
-	private int _tickRate = 60;
-	private double _netTickTimer;
-	private int _currentTick;
+    [Signal]
+    public delegate void NetworkProcessTickEventHandler(double delta);
 
-	public override void _Ready()
-	{
-		Server.Instance.SubscribeToPacket<SyncClockPacket>(HandleSyncRequest);
-	}
+    private int _currentTick;
+    private double _netTickTimer;
 
-	public override void _Process(double delta)
-	{
-		SendNetworkTickEvent(delta);
-	}
+    [Export] private int _tickRate = 60;
 
-	public int ProcessTick()
-	{
-		_currentTick++;
-		return _currentTick;
-	}
+    public override void _Ready()
+    {
+        SubscribeToPackets<SyncClockPacket>(HandleSyncRequest);
+    }
 
-	public int GetNetworkTickRate()
-	{
-		return _tickRate;
-	}
+    public override void _Process(double delta)
+    {
+        SendNetworkTickEvent(delta);
+    }
 
-	private void SendNetworkTickEvent(double delta)
-	{
-		_netTickTimer += delta;
-		if (_netTickTimer < 1.0 / _tickRate)
-			return;
+    public int ProcessTick()
+    {
+        _currentTick++;
+        return _currentTick;
+    }
 
-		EmitSignal(SignalName.NetworkProcessTick, _netTickTimer);
-		_netTickTimer = 0;
-	}
+    public int GetNetworkTickRate()
+    {
+        return _tickRate;
+    }
 
-	private void HandleSyncRequest(SyncClockPacket packet, NetPeer peer)
-	{
-		packet.ServerTick = _currentTick;
-		SendToClient(peer.Id, packet, DeliveryMethod.Unreliable);
-	}
+    private void SendNetworkTickEvent(double delta)
+    {
+        _netTickTimer += delta;
+        if (_netTickTimer < 1.0 / _tickRate)
+            return;
 
-	public void DrawDebugInfo()
-	{
-		if (!ImGui.CollapsingHeader("Clock")) return;
-		ImGui.Text($"Network Tickrate {GetNetworkTickRate()}hz");
-		ImGui.Text($"Current Tick {_currentTick}");
-	}
+        EmitSignal(SignalName.NetworkProcessTick, _netTickTimer);
+        _netTickTimer = 0;
+    }
+
+    private void HandleSyncRequest(SyncClockPacket packet, ActorNode actor)
+    {
+        packet.ServerTick = _currentTick;
+        SendToClient(Actors.GetPeerId(actor.Id), packet, DeliveryMethod.Unreliable);
+    }
+
+    public void DrawDebugInfo()
+    {
+        if (!ImGui.CollapsingHeader("Clock")) return;
+        ImGui.Text($"Network Tick rate {GetNetworkTickRate()}hz");
+        ImGui.Text($"Current Tick {_currentTick}");
+    }
 }

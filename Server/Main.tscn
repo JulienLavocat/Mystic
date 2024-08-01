@@ -5,9 +5,12 @@
 
 [node name="Main" type="Node3D"]
 
-[node name="Clock" type="Node" parent="."]
+[node name="Clock" type="Node3D" parent="."]
 script = ExtResource("1_heryd")
 
-[node name="Server" type="Node" parent="." node_paths=PackedStringArray("_clock")]
+[node name="Server" type="Node" parent="." node_paths=PackedStringArray("_clock", "_actors")]
 script = ExtResource("1_hnrbl")
 _clock = NodePath("../Clock")
+_actors = NodePath("../Actors")
+
+[node name="Actors" type="Node" parent="."]

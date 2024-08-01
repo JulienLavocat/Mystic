@@ -4,7 +4,8 @@ extends Node
 func _ready() -> void:
 	var args: PackedStringArray = OS.get_cmdline_args()
 	print(args)
-	if args.find("server") > 0:
+	print(args.has("server"))
+	if args.has("server"):
 		get_tree().call_deferred("change_scene_to_file", "res://Server/Main.tscn")
 		return
 		
