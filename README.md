@@ -7,7 +7,7 @@ Mystic is an MMO game framework for Godot 4+.
 1. Install [GodotEnv](https://github.com/chickensoft-games/GodotEnv/)
 2. Install the correct version of Godot using `godotenv godot install 4.3.0-rc.1`
 3. Clone the repository
-4. Initialize the addons using `godotenv godot addons install`
+4. Initialize the addons using `godotenv addons install`
 
 
 ## Troubleshooting
