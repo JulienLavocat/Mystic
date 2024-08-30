@@ -13,6 +13,10 @@ public partial class NetClock : NetworkNode
     [Signal]
     public delegate void LatencyCalculatedEventHandler(int latencyAverageTicks, int jitterAverageTicks);
 
+    private readonly List<int> _latencyValues = new();
+
+    private readonly List<int> _offsetValues = new();
+
     private int _averageLatencyInTicks;
     private int _averageOffsetInTicks;
     private int _currentTick;
@@ -20,11 +24,8 @@ public partial class NetClock : NetworkNode
     private int _immediateLatencyMs;
     private int _jitterInTicks;
     private int _lastOffset;
-    private readonly List<int> _latencyValues = new();
     [Export] private int _minLatency = 50;
     private int _minLatencyInTicks;
-
-    private readonly List<int> _offsetValues = new();
     [Export] private int _sampleSize = 11;
     private int _syncPacketsReceived;
 
@@ -69,7 +70,7 @@ public partial class NetClock : NetworkNode
             packet.ServerTick - _currentTick +
             immediateLatencyInTicks; // Time difference between our clock and the server clock accounting for latency
 
-        _offsetValues.Add(immediateOffsetInTicks);
+        _offsetValues.Add((int)immediateOffsetInTicks);
         _latencyValues.Add(immediateLatencyInTicks);
 
         if (_offsetValues.Count < _sampleSize) return;
