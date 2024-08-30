@@ -62,7 +62,7 @@ public partial class Client : Node
     public void Connect()
     {
         _netManager.Start();
-        if (_netManager.Connect("localhost", 9050, "") != null) EmitSignal(SignalName.NetworkReady);
+        if (_netManager.Connect("localhost", 30000, "") != null) EmitSignal(SignalName.NetworkReady);
     }
 
     public void Send<T>(T packet, DeliveryMethod method, byte channel = 0) where T : class, new()
@@ -104,6 +104,7 @@ public partial class Client : Node
 
     public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
     {
+        GD.PrintErr("disconnected", disconnectInfo.Reason);
     }
 
     public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)

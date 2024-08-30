@@ -19,5 +19,7 @@ COPY --from=build /app/builds/server .
 
 RUN ls -la
 
+EXPOSE 9050
+
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 CMD ["./server.x86_64", "server"]

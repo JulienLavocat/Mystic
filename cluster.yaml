@@ -1,0 +1,46 @@
+apiVersion: ctlptl.dev/v1alpha1
+kind: Registry
+name: ctlptl-registry
+port: 5005
+---
+apiVersion: ctlptl.dev/v1alpha1
+kind: Cluster
+product: kind
+registry: ctlptl-registry
+kindV1Alpha4Cluster:
+  nodes:
+    - role: control-plane
+      extraPortMappings:
+        - containerPort: 30000
+          hostPort: 30000
+          protocol: udp
+        - containerPort: 30001
+          hostPort: 30001
+          protocol: udp
+        - containerPort: 30002
+          hostPort: 30002
+          protocol: udp
+        - containerPort: 30003
+          hostPort: 30003
+          protocol: udp
+        - containerPort: 30004
+          hostPort: 30004
+          protocol: udp
+        - containerPort: 30005
+          hostPort: 30005
+          protocol: udp
+        - containerPort: 30006
+          hostPort: 30006
+          protocol: udp
+        - containerPort: 30007
+          hostPort: 30007
+          protocol: udp
+        - containerPort: 30008
+          hostPort: 30008
+          protocol: udp
+        - containerPort: 30009
+          hostPort: 30009
+          protocol: udp
+        - containerPort: 30010
+          hostPort: 30010
+          protocol: udp

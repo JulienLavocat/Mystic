@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tilt_gameserver_id
+  namespace: tilt_namespace
+  labels:
+    app: tilt_gameserver_id
+spec:
+  selector:
+    matchLabels:
+      app: tilt_gameserver_id
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tilt_gameserver_id
+    spec:
+      containers:
+        - name: tilt_gameserver_id
+          image: "localhost:5005/mystic/gs"
+          ports:
+            - containerPort: 9050
+              protocol: UDP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tilt_gameserver_id
+  namespace: tilt_namespace
+spec:
+  selector:
+    app: tilt_gameserver_id
+  type: NodePort
+  ports:
+    - name: tilt_gameserver_id
+      protocol: UDP
+      port: 9050
+      nodePort: tilt_port
