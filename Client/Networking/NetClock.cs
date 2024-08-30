@@ -8,7 +8,7 @@ using Mystic.Shared.Utils;
 
 namespace Mystic.Client.Networking;
 
-public partial class NetworkClock : NetworkNode
+public partial class NetClock : NetworkNode
 {
     [Signal]
     public delegate void LatencyCalculatedEventHandler(int latencyAverageTicks, int jitterAverageTicks);

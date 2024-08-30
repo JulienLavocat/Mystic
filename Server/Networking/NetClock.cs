@@ -5,13 +5,13 @@ using Mystic.Shared.Packets;
 
 namespace Mystic.Server.Networking;
 
-public partial class NetworkClock : ActorNode
+public partial class NetClock : ActorNode
 {
     [Signal]
     public delegate void NetworkProcessTickEventHandler(double delta);
 
     private int _currentTick;
-    private double _netTickTimer;
+    private double _nextTickTimer;
 
     [Export] private int _tickRate = 60;
 
@@ -38,12 +38,12 @@ public partial class NetworkClock : ActorNode
 
     private void SendNetworkTickEvent(double delta)
     {
-        _netTickTimer += delta;
-        if (_netTickTimer < 1.0 / _tickRate)
+        _nextTickTimer += delta;
+        if (_nextTickTimer < 1.0 / _tickRate)
             return;
 
-        EmitSignal(SignalName.NetworkProcessTick, _netTickTimer);
-        _netTickTimer = 0;
+        EmitSignal(SignalName.NetworkProcessTick, _nextTickTimer);
+        _nextTickTimer = 0;
     }
 
     private void HandleSyncRequest(SyncClockPacket packet, ActorNode actor)

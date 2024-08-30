@@ -3,3 +3,4 @@
 addons/*
 !addons/.editorconfig
 .addons/*
+builds

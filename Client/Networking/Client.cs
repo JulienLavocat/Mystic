@@ -21,7 +21,7 @@ public partial class Client : Node
     private readonly NetPacketProcessor _packetProcessor = new();
     private readonly NetDataWriter _writer = new();
 
-    [Export] private NetworkClock _clock;
+    [Export] private NetClock _clock;
 
     private NetManager _netManager;
     public static Client Instance { get; private set; }

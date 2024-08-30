@@ -14,9 +14,8 @@ public partial class Server : Node
 
     private readonly ServerHost _host = new();
     [Export] private Node _actors;
-
-
-    [Export] private NetworkClock _clock;
+    
+    [Export] private NetClock _clock;
 
     public static Server Instance { get; private set; }
     public static ServerHost Host => Instance._host;
