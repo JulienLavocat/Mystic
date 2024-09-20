@@ -11,6 +11,9 @@ kindV1Alpha4Cluster:
   nodes:
     - role: control-plane
       extraPortMappings:
+        - containerPort: 3301
+          hostPort: 3301
+          protocol: tcp
         - containerPort: 30000
           hostPort: 30000
           protocol: udp

@@ -29,7 +29,7 @@ The following sections will first walk you through the Godot setup (engine versi
 
 #### Servers
 
-1. Install [cptl](https://github.com/tilt-dev/ctlptl), [Kind](https://kind.sigs.k8s.io)
+1. Install [cptl](https://github.com/tilt-dev/ctlptl), [Kind](https://kind.sigs.k8s.io) and [Tilt](https://docs.tilt.dev/)
 2. Create a local image registry to publish server builds and your local kubernetes cluster `ctlptl apply -f cluster.yaml`
 3. Run `tilt up` and press space while the process is running to open the web ui (or go to http://localhost:10350/overview)
 
