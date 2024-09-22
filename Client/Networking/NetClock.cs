@@ -39,7 +39,8 @@ public partial class NetClock : Node
 
 	public override void _Ready()
 	{
-		Client.Instance.SubscribeToPacket<SyncClockPacket>(OnSyncReceived);
+		Client.SubscribeToPacket<SyncClockPacket>(OnSyncReceived);
+		Client.OnNetworkReady += SendSyncRequest;
 
 		_timer = new Timer();
 		_timer.WaitTime = _syncRequestRateSec;
@@ -119,7 +120,7 @@ public partial class NetClock : Node
 
 	private static void SendSyncRequest()
 	{
-		Client.Instance.Send(new SyncClockPacket
+		Client.Send(new SyncClockPacket
 		{
 			ClientTime = (int)Time.GetTicksMsec()
 		}, DeliveryMethod.Unreliable, 1);

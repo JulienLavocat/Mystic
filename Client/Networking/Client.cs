@@ -9,34 +9,41 @@ using Vector2 = System.Numerics.Vector2;
 
 namespace Mystic.Client.Networking;
 
-[GlobalClass]
-public partial class Client : Node
+public static class Client
 {
-	[Signal]
 	public delegate void ClientTickEventHandler(int currentTick, int currentRemoteTick);
 
-	[Signal]
 	public delegate void NetworkReadyEventHandler();
 
-	private readonly NetPacketProcessor _packetProcessor = new();
-	private readonly NetDataWriter _writer = new();
+	private static readonly NetPacketProcessor PacketProcessor = new();
+	private static readonly NetDataWriter Writer = new();
 
-	[Export] private NetClock _clock;
+	private static NetClock _clock;
 
-	private NetManager _netManager;
-	public static Client Instance { get; private set; }
+	private static NetManager _netManager;
 
-	public override void _EnterTree()
+	public static event NetworkReadyEventHandler OnNetworkReady;
+	public static event ClientTickEventHandler OnClientTick;
+
+	public static void Update()
 	{
-		Instance = this;
+		_netManager.PollEvents();
+		DisplayDebugInfo();
 	}
 
-	public override void _Ready()
+	public static void Tick()
 	{
+		_clock.ProcessTick();
+		OnClientTick?.Invoke(_clock.GetCurrentTick(), _clock.GetCurrentRemoteTick());
+	}
+
+	public static void Connect(NetClock clock)
+	{
+		_clock = clock;
 		var listener = new EventBasedNetListener();
 		_netManager = new NetManager(listener)
 		{
-			EnableStatistics = true,
+			EnableStatistics = true
 		};
 
 		listener.PeerConnectedEvent += OnPeerConnected;
@@ -44,40 +51,23 @@ public partial class Client : Node
 		listener.NetworkErrorEvent += OnNetworkError;
 		listener.NetworkReceiveEvent += OnNetworkReceive;
 
-		Connect();
-	}
-
-	public override void _Process(double delta)
-	{
-		_netManager.PollEvents();
-		DisplayDebugInfo();
-	}
-
-	public override void _PhysicsProcess(double delta)
-	{
-		_clock.ProcessTick();
-		EmitSignal(SignalName.ClientTick, _clock.GetCurrentTick(), _clock.GetCurrentRemoteTick());
-	}
-
-	public void Connect()
-	{
 		_netManager.Start();
-		if (_netManager.Connect("localhost", 30000, "") != null) EmitSignal(SignalName.NetworkReady);
+		if (_netManager.Connect("localhost", 30000, "") != null) OnNetworkReady?.Invoke();
 	}
 
-	public void Send<T>(T packet, DeliveryMethod method, byte channel = 0) where T : class, new()
+	public static void Send<T>(T packet, DeliveryMethod method, byte channel = 0) where T : class, new()
 	{
-		_writer.Reset();
-		_packetProcessor.Write(_writer, packet);
-		_netManager.FirstPeer?.Send(_writer, channel, method);
+		Writer.Reset();
+		PacketProcessor.Write(Writer, packet);
+		_netManager.FirstPeer?.Send(Writer, channel, method);
 	}
 
-	public void SubscribeToPacket<T>(Action<T, NetPeer> action) where T : class, new()
+	public static void SubscribeToPacket<T>(Action<T, NetPeer> action) where T : class, new()
 	{
-		_packetProcessor.SubscribeReusable(action);
+		PacketProcessor.SubscribeReusable(action);
 	}
 
-	private void DisplayDebugInfo()
+	private static void DisplayDebugInfo()
 	{
 		ImGui.SetNextWindowPos(Vector2.Zero);
 		ImGui.Begin("Client", ImGuiWindowFlags.AlwaysAutoResize);
@@ -97,28 +87,28 @@ public partial class Client : Node
 		ImGui.End();
 	}
 
-	public void OnPeerConnected(NetPeer peer)
+	private static void OnPeerConnected(NetPeer peer)
 	{
 		GD.Print("Connected to server");
 	}
 
-	public void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
+	private static void OnPeerDisconnected(NetPeer peer, DisconnectInfo disconnectInfo)
 	{
-		GD.PrintErr("disconnected", disconnectInfo.Reason);
+		GD.PrintErr("Disconnected from server: ", disconnectInfo.Reason);
 	}
 
-	public void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
+	private static void OnNetworkError(IPEndPoint endPoint, SocketError socketError)
 	{
 		GD.PrintErr(socketError);
 	}
 
-	public void OnNetworkReceive(
+	private static void OnNetworkReceive(
 		NetPeer peer,
 		NetPacketReader reader,
 		byte channelNumber,
 		DeliveryMethod deliveryMethod
 	)
 	{
-		_packetProcessor.ReadAllPackets(reader, peer);
+		PacketProcessor.ReadAllPackets(reader, peer);
 	}
 }
