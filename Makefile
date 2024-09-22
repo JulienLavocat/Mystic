@@ -1,7 +1,11 @@
+godot:
+	godotenv godot install 4.3.0
+	godotenv addons install
+
 dns:
 	echo "127.0.0.1 monitoring.mystic.local" | sudo tee -a /etc/hosts >/dev/null
 
-dev:
+cluster:
 	ctlptl apply -f local/cluster.yaml
 	kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/kind/deploy.yaml
 	sleep 10
