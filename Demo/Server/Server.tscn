@@ -1,14 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dx2oa871jd3aa"]
+[gd_scene load_steps=2 format=3 uid="uid://dx2oa871jd3aa"]
 
-[ext_resource type="Script" path="res://GamerServer/Networking/ServerClock.cs" id="1_heryd"]
-[ext_resource type="Script" path="res://GamerServer/Networking/ServerNode.cs" id="1_hnrbl"]
+[ext_resource type="PackedScene" uid="uid://dfduxjpjtntow" path="res://GamerServer/Scenes/Server.tscn" id="1_hssp5"]
 
 [node name="Main" type="Node3D"]
 
-[node name="Clock" type="Node3D" parent="."]
-script = ExtResource("1_heryd")
-
-[node name="Server" type="Node" parent="."]
-script = ExtResource("1_hnrbl")
-
-[node name="Actors" type="Node" parent="."]
+[node name="Server" parent="." instance=ExtResource("1_hssp5")]

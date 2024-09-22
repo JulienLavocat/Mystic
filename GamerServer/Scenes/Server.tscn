@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dfduxjpjtntow"]
+
+[ext_resource type="Script" path="res://GamerServer/Networking/ServerNode.cs" id="1_kasol"]
+[ext_resource type="Script" path="res://GamerServer/Networking/ServerClock.cs" id="2_fs3v4"]
+
+[node name="Server" type="Node"]
+script = ExtResource("1_kasol")
+
+[node name="Clock" type="Node" parent="."]
+script = ExtResource("2_fs3v4")

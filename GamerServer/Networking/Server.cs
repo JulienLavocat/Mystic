@@ -40,6 +40,12 @@ public static class Server
 		GD.Print($"Server started on port {Configuration.Port} ");
 	}
 
+	public static void Stop()
+	{
+		using var activity = Instrumentation.Measure("Stop");
+		Host.Stop();
+	}
+
 	public static bool GetClient(int id, out Client client) => Clients.TryGetValue(id, out client);
 
 	public static void Send<T>(int clientId, T packet, DeliveryMethod method, byte channel = 0)

@@ -19,9 +19,6 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.Runtime" Version="1.9.0"/>
     </ItemGroup>
     <ItemGroup>
-        <Folder Include="Client\Demo\Player\"/>
-    </ItemGroup>
-    <ItemGroup>
         <Content Include=".dockerignore"/>
         <Content Include="Dockerfile"/>
     </ItemGroup>

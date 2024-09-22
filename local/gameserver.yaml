@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: tilt_gameserver_id
   namespace: tilt_namespace
   labels:
     app: tilt_gameserver_id
 spec:
+  serviceName: gameserver
   selector:
     matchLabels:
       app: tilt_gameserver_id

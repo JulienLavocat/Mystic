@@ -39,6 +39,11 @@ public class Host
 		_manager.Start(Configuration.Port);
 	}
 
+	public void Stop()
+	{
+		_manager.Stop();
+	}
+
 	public void Tick()
 	{
 		_manager.PollEvents();
