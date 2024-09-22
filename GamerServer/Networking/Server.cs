@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Godot;
 using ImGuiNET;
 using LiteNetLib;
+using LiteNetLib.Utils;
 using Mystic.Shared.Utils.Monitoring;
 using Vector2 = System.Numerics.Vector2;
 
@@ -67,28 +68,20 @@ public static class Server
 	}
 
 	public static void Subscribe<T>(PacketsDispatcher.PacketsSubscription<T> action)
-		where T : class, new()
-	{
-		Host.Subscribe(action);
-	}
+		where T : class, new() => Host.Subscribe(action);
 
 	public static void Subscribe<T>(int id, PacketsDispatcher.ClientPacketsSubscription<T> action)
-		where T : class, new()
-	{
-		Host.Subscribe(id, action);
-	}
+		where T : class, new() => Host.Subscribe(id, action);
 
 	public static void Unsubscribe<T>(PacketsDispatcher.PacketsSubscription<T> action)
-		where T : class, new()
-	{
+		where T : class, new() =>
 		Host.Unsubscribe(action);
-	}
 
 	public static void Unsubscribe<T>(int id, PacketsDispatcher.ClientPacketsSubscription<T> action)
-		where T : class, new()
-	{
+		where T : class, new() =>
 		Host.Unsubscribe(id, action);
-	}
+
+	public static void RegisterNestedType<T>() where T : struct, INetSerializable => Host.RegisterNestedType<T>();
 
 	public static void Tick(double delta)
 	{

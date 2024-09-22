@@ -1,7 +1,11 @@
-[gd_scene load_steps=2 format=3 uid="uid://dx2oa871jd3aa"]
+[gd_scene load_steps=3 format=3 uid="uid://dx2oa871jd3aa"]
 
 [ext_resource type="PackedScene" uid="uid://dfduxjpjtntow" path="res://GamerServer/Scenes/Server.tscn" id="1_hssp5"]
+[ext_resource type="Script" path="res://GamerServer/Features/PlayerMovement/PlayerInputsHandler.cs" id="2_otfvg"]
 
 [node name="Main" type="Node3D"]
 
 [node name="Server" parent="." instance=ExtResource("1_hssp5")]
+
+[node name="PlayerInputsHandler" type="Node" parent="."]
+script = ExtResource("2_otfvg")

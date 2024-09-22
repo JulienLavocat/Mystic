@@ -46,9 +46,42 @@ Before working on a Mystic project, you'll need to install the following tools:
 
 ### Developing your game using Mystic
 
-Once the setup steps are completed, you are now ready to work on your game.
+Once the setup steps are completed, you are now ready to work on your game. This section will describe how to work
+with Mystic as your framework and give some examples to implement some features (TODO!)
+
+#### Inside the Godot editor
 
 TODO: Add godot side of things once done, also add documentation links
+
+#### Registering, sending and receiving a packet
+
+The end goal is to have a custom protocol file format to easily generate the packets, for now everything is registered
+manually in your code.
+
+##### Registering a packet
+
+Each packets are registered automatically when subscribed / sent, you only need to register it's nested types if they
+aren't on of these types :
+
+```
+byte sbyte short ushort int uint long ulong float double bool string char IPEndPoint
+```
+
+To do so, use `Client.RegisterNestedType<YourTypeHere>()` in the client and `Server.RegisterNestedType<YourTypeHere>()`
+in
+in the server **BEFORE** using your packet (otherwise all it's fields will be uninitialized).
+
+Example :
+
+```csharp
+// Server
+Server.RegisterNestedType<PlayerInput>();
+Server.Subscribe<PlayerInputPacket>(HandlePlayerInput);
+
+// Client
+Client.RegisterNestedType<PlayerInput>();
+Client.Send(new PlayerInput(), DeliveryMethod.Unreliable);
+```
 
 #### Servers performance and logs
 

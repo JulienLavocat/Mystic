@@ -1,5 +1,7 @@
+using Godot;
 using ImGuiNET;
 using LiteNetLib;
+using LiteNetLib.Utils;
 
 namespace Mystic.GamerServer.Networking;
 
@@ -26,7 +28,19 @@ public class Host
 			PeerConnectedEvent?.Invoke(peer);
 		_listener.PeerDisconnectedEvent += (peer, info) => PeerDisconnectedEvent?.Invoke(peer, info);
 		_listener.ConnectionRequestEvent += rq => rq.Accept();
-		_listener.NetworkReceiveEvent += (peer, reader, channel, method) => _dispatcher.ReadAllPackets(reader, peer.Id);
+		_listener.NetworkReceiveEvent += (peer, reader, channel, method) =>
+		{
+			try
+			{
+				_dispatcher.ReadAllPackets(reader, peer.Id);
+			}
+			catch (ParseException)
+			{
+				GD.PushWarning("received an invalid packet");
+				peer.Disconnect();
+				Metrics.IncrementUnknownPacketsReceived();
+			}
+		};
 	}
 
 	public event OnPeerConnected PeerConnectedEvent;
@@ -68,6 +82,8 @@ public class Host
 	{
 		_dispatcher.Unsubscribe(id, action);
 	}
+
+	public void RegisterNestedType<T>() where T : struct, INetSerializable => _dispatcher.RegisterType<T>();
 
 	public void DrawDebugInfo()
 	{

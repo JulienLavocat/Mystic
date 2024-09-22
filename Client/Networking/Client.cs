@@ -22,6 +22,8 @@ public static class Client
 
 	private static NetManager _netManager;
 
+	public static bool IsNetworkReady { get; private set; }
+
 	public static event NetworkReadyEventHandler OnNetworkReady;
 	public static event ClientTickEventHandler OnClientTick;
 
@@ -52,7 +54,16 @@ public static class Client
 		listener.NetworkReceiveEvent += OnNetworkReceive;
 
 		_netManager.Start();
-		if (_netManager.Connect("localhost", 30000, "") != null) OnNetworkReady?.Invoke();
+		if (_netManager.Connect("localhost", 30000, "") == null) return;
+
+		GD.Print("Client is NetworkReady");
+		IsNetworkReady = true;
+		OnNetworkReady?.Invoke();
+	}
+
+	public static void Disconnect()
+	{
+		_netManager.Stop();
 	}
 
 	public static void Send<T>(T packet, DeliveryMethod method, byte channel = 0) where T : class, new()
@@ -65,6 +76,11 @@ public static class Client
 	public static void SubscribeToPacket<T>(Action<T, NetPeer> action) where T : class, new()
 	{
 		PacketProcessor.SubscribeReusable(action);
+	}
+
+	public static void RegisterNestedType<T>() where T : struct, INetSerializable
+	{
+		PacketProcessor.RegisterNestedType<T>();
 	}
 
 	private static void DisplayDebugInfo()

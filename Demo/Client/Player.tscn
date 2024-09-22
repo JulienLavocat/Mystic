@@ -1,3 +1,26 @@
-[gd_scene format=3 uid="uid://ce03amy65u360"]
+[gd_scene load_steps=5 format=3 uid="uid://ce03amy65u360"]
 
-[node name="Player" type="Node3D"]
+[ext_resource type="Script" path="res://Client/Networking/SyncCharacterBody.cs" id="1_axyip"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hlwy8"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_d5pri"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3y4oc"]
+
+[node name="Player" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.017, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_hlwy8")
+
+[node name="SyncCharacterBody" type="Node" parent="." node_paths=PackedStringArray("_player")]
+script = ExtResource("1_axyip")
+_player = NodePath("..")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+mesh = SubResource("CapsuleMesh_d5pri")
+material = SubResource("StandardMaterial3D_3y4oc")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.78325, 0)

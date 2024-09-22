@@ -13,8 +13,13 @@ public abstract partial class NetworkNode : Node
 
 	public override void _Ready()
 	{
+		GD.Print("I HAVE BEEN CALLED");
 		Client.OnClientTick += OnProcessTick;
-		Client.OnNetworkReady += OnNetworkReady;
+
+		if (Client.IsNetworkReady)
+			OnNetworkReady();
+		else
+			Client.OnNetworkReady += OnNetworkReady;
 	}
 
 	private void OnNetworkReady()

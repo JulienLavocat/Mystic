@@ -28,4 +28,9 @@ public partial class ClientManager : Node
 	{
 		Networking.Client.Tick();
 	}
+
+	public override void _ExitTree()
+	{
+		Networking.Client.Disconnect();
+	}
 }

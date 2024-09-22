@@ -20,6 +20,17 @@
     </ItemGroup>
     <ItemGroup>
         <Content Include=".dockerignore"/>
+        <Content Include="addons.jsonc" />
         <Content Include="Dockerfile"/>
+        <Content Include="local\cluster.yaml" />
+        <Content Include="local\Dockerfile" />
+        <Content Include="local\gameserver-dashboard.json" />
+        <Content Include="local\gameserver.yaml" />
+        <Content Include="local\OTEL_DIAGNOSTICS.json" />
+        <Content Include="local\signoz-infra.yaml" />
+        <Content Include="local\signoz.yaml" />
+        <Content Include="Makefile" />
+        <Content Include="README.md"/>
+        <Content Include="Tiltfile" />
     </ItemGroup>
 </Project>
