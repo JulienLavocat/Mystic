@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Client/Networking/Client.cs" id="1_iewrt"]
 [ext_resource type="Script" path="res://Client/Networking/NetClock.cs" id="2_wimv1"]
 [ext_resource type="Texture2D" uid="uid://ddtk4u47stx0" path="res://Demo/Client/Assets/Textures/Prototype/Dark/texture_01.png" id="3_fptwh"]
-[ext_resource type="PackedScene" uid="uid://cr2ersq7g6q6f" path="res://addons/Player/Player.tscn" id="4_kgmvd"]
+[ext_resource type="PackedScene" uid="uid://ce03amy65u360" path="res://Demo/Client/Player.tscn" id="4_kgmvd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ej4s"]
 albedo_texture = ExtResource("3_fptwh")

@@ -1,0 +1,11 @@
+global:
+  cloud: others
+  clusterName: mystic
+  deploymentEnvironment: dev
+otelCollectorEndpoint: monitoring-signoz-otel-collector.platform.svc.cluster.local:4317
+otelInsecure: true
+presets:
+  otlpExporter:
+    enabled: true
+  loggingExporter:
+    enabled: false

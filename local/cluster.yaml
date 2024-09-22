@@ -10,10 +10,19 @@ registry: ctlptl-registry
 kindV1Alpha4Cluster:
   nodes:
     - role: control-plane
+      kubeadmConfigPatches:
+        - |
+          kind: InitConfiguration
+          nodeRegistration:
+            kubeletExtraArgs:
+              node-labels: "ingress-ready=true"
       extraPortMappings:
-        - containerPort: 3301
-          hostPort: 3301
-          protocol: tcp
+        - containerPort: 80
+          hostPort: 80
+          protocol: TCP
+        - containerPort: 443
+          hostPort: 443
+          protocol: TCP
         - containerPort: 30000
           hostPort: 30000
           protocol: udp

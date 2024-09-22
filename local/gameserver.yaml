@@ -21,6 +21,13 @@ spec:
           ports:
             - containerPort: 9050
               protocol: UDP
+          env:
+            - name: OTEL_SERVICE_NAME
+              value: "gameserver"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: http://monitoring-signoz-otel-collector.platform.svc.cluster.local:4317
+            - name: OTEL_RESOURCE_ATTRIBUTES
+              value: "service.namespace=tilt_namespace,service.instance.id=tilt_gameserver_id"
       restartPolicy: Always
 ---
 apiVersion: v1

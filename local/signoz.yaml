@@ -1,0 +1,10 @@
+frontend:
+  ingress:
+    enabled: true
+    className: "nginx"
+    hosts:
+      - host: monitoring.mystic.local
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            port: 3301
