@@ -2,13 +2,13 @@ using LiteNetLib.Utils;
 
 namespace Mystic.Shared.Packets;
 
-public class PlayerInputPacket
+public class CharacterInputPacket
 {
-	public PlayerInput[] Inputs { get; set; }
+	public UserInput[] Inputs { get; set; }
 	public int Tick { get; set; }
 }
 
-public struct PlayerInput : INetSerializable
+public struct UserInput : INetSerializable
 {
 	public byte Keys { get; set; }
 	public float LateralLookAngle { get; set; }

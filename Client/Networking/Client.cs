@@ -30,12 +30,13 @@ public static class Client
 	public static void Update()
 	{
 		_netManager.PollEvents();
-		DisplayDebugInfo();
+		// DisplayDebugInfo();
 	}
 
 	public static void Tick()
 	{
 		_clock.ProcessTick();
+		if (!IsNetworkReady) return;
 		OnClientTick?.Invoke(_clock.GetCurrentTick(), _clock.GetCurrentRemoteTick());
 	}
 

@@ -1,9 +1,11 @@
+using System;
 using Godot;
 using LiteNetLib;
+using Mystic.Shared.Packets;
 
-namespace Mystic.Client.Networking;
+namespace Mystic.Client.Nodes;
 
-public abstract partial class NetworkNode : Node
+public abstract partial class ClientNetworkNode : Node
 {
 	protected bool NetworkReady { get; private set; }
 
@@ -13,13 +15,12 @@ public abstract partial class NetworkNode : Node
 
 	public override void _Ready()
 	{
-		GD.Print("I HAVE BEEN CALLED");
-		Client.OnClientTick += OnProcessTick;
+		Networking.Client.OnClientTick += OnProcessTick;
 
-		if (Client.IsNetworkReady)
+		if (Networking.Client.IsNetworkReady)
 			OnNetworkReady();
 		else
-			Client.OnNetworkReady += OnNetworkReady;
+			Networking.Client.OnNetworkReady += OnNetworkReady;
 	}
 
 	private void OnNetworkReady()
@@ -29,6 +30,10 @@ public abstract partial class NetworkNode : Node
 
 	protected void SendToServer<T>(T packet, DeliveryMethod method, byte channel = 0) where T : class, new()
 	{
-		Client.Send(packet, method, channel);
+		Networking.Client.Send(packet, method, channel);
+	}
+
+	protected void SubscribeToEntitySnapshot(Action<EntitySnapshot, uint> cb)
+	{
 	}
 }

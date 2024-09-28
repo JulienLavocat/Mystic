@@ -34,6 +34,11 @@ RUN wget --progress=dot:giga https://downloads.tuxfamily.org/godotengine/${GODOT
 
 WORKDIR /app
 
+ADD https://raw.githubusercontent.com/tilt-dev/rerun-process-wrapper/refs/heads/master/restart.sh restart.sh
+ADD https://raw.githubusercontent.com/tilt-dev/rerun-process-wrapper/refs/heads/master/start.sh start.sh
+
+RUN chmod +x start.sh && chmod +x restart.sh
+
 COPY . .
 
 EXPOSE 9050
@@ -41,5 +46,3 @@ EXPOSE 9050
 # ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
 
 RUN dotnet build -p:GodotTargetPlatform=linuxbsd -c Debug
-
-CMD [ "godot", "--headless", "--verbose", "server"]

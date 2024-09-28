@@ -15,3 +15,6 @@ cluster:
   		--timeout=90s
 	helm --namespace platform upgrade --install --atomic --timeout 300s monitoring signoz/signoz --create-namespace -f local/signoz.yaml
 	helm --namespace platform upgrade --install --atomic --timeout 300s infra signoz/k8s-infra -f local/signoz-infra.yaml
+	
+watch:
+	tilt up -f local/Tiltfile

@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using Godot;
-using ImGuiNET;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Mystic.Shared.Utils.Monitoring;
-using Vector2 = System.Numerics.Vector2;
 
 namespace Mystic.GamerServer.Networking;
 
@@ -94,16 +92,16 @@ public static class Server
 
 	private static void DisplayDebugInfo()
 	{
-		ImGui.SetNextWindowPos(Vector2.Zero);
-
-		if (!ImGui.Begin("Server", ImGuiWindowFlags.AlwaysAutoResize))
-			return;
-
-		ImGui.Text($"Tick rate {Engine.PhysicsTicksPerSecond}hz");
-		ImGui.Text($"Current Tick {CurrentTick}");
-
-		Host.DrawDebugInfo();
-
-		ImGui.End();
+		// ImGui.SetNextWindowPos(Vector2.Zero);
+		//
+		// if (!ImGui.Begin("Server", ImGuiWindowFlags.AlwaysAutoResize))
+		// 	return;
+		//
+		// ImGui.Text($"Tick rate {Engine.PhysicsTicksPerSecond}hz");
+		// ImGui.Text($"Current Tick {CurrentTick}");
+		//
+		// Host.DrawDebugInfo();
+		//
+		// ImGui.End();
 	}
 }

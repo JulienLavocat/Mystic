@@ -9,11 +9,12 @@ public partial class PlayerInputsHandler : Node
 {
 	public override void _Ready()
 	{
-		Server.RegisterNestedType<PlayerInput>();
-		Server.Subscribe<PlayerInputPacket>(HandlePlayerInput);
+		Server.RegisterNestedType<UserInput>();
+
+		Server.Subscribe<CharacterInputPacket>(HandlePlayerInput);
 	}
 
-	private static void HandlePlayerInput(int peerId, PlayerInputPacket packet)
+	private static void HandlePlayerInput(int peerId, CharacterInputPacket packet)
 	{
 		GD.Print($"{packet.Tick}");
 	}
