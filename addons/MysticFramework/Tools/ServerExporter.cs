@@ -7,14 +7,9 @@ namespace MysticFramework.Tools;
 
 public class ServerExporter
 {
-	public event Action OnBegin;
-	public event Action OnSuccess;
-	public event Action<string> OnError;
-	public event Action<string, int> OnProgress;
-
-	public int TotalSavePacksSteps { get; private set; }
-
 	private readonly Process _process;
+
+	private bool _isRunning;
 
 	public ServerExporter()
 	{
@@ -30,15 +25,24 @@ public class ServerExporter
 		_process.OutputDataReceived += EmitProgress;
 	}
 
+	public int TotalSavePacksSteps { get; private set; }
+	public event Action OnBegin;
+	public event Action OnSuccess;
+	public event Action<string> OnError;
+	public event Action<string, int> OnProgress;
+
 	public void Start()
 	{
+		if (_isRunning) return;
 		_process.Start();
 		_process.BeginOutputReadLine();
+		_isRunning = true;
 		OnBegin?.Invoke();
 	}
 
 	private void OnExit(object sender, EventArgs args)
 	{
+		_isRunning = false;
 		_process.CancelOutputRead();
 		if (_process.ExitCode > 0)
 			OnError?.Invoke(_process.StandardError.ReadToEnd());

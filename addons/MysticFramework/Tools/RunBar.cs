@@ -1,7 +1,7 @@
 #if TOOLS
-using Godot;
 using System.Collections.Generic;
 using System.Threading;
+using Godot;
 using Godot.Collections;
 
 namespace MysticFramework.Tools;
@@ -12,24 +12,24 @@ public partial class RunBar : Control
 	private const string RunBarThemeType = "RunBarButton";
 	private const string ClientSleepTimeSetting = "mystic/run/client_sleep_time";
 
-	private Texture2D _playProjectIcon;
-	private Texture2D _playSceneIcon;
-	private Button _playProjectBtn;
-	private Button _playSceneBtn;
+	private readonly ServerExporter _exporter = new();
 	private Button _mysticPlayBtn;
+	private Button _playProjectBtn;
 
-	private ServerExporter _exporter = new();
+	private Texture2D _playProjectIcon;
+	private Button _playSceneBtn;
+	private Texture2D _playSceneIcon;
 	private Window _window;
 
 	public override void _EnterTree()
 	{
 		AddProjectSettings();
-		
+
 		_exporter.OnBegin += () => GD.Print("Exporting server");
 		_exporter.OnSuccess += OnExportSuccess;
 		_exporter.OnError += OnExportError;
 		_exporter.OnProgress += (line, _) => GD.Print(line);
-		
+
 		var editorInterface = EditorInterface.Singleton.GetBaseControl();
 		_playProjectIcon = editorInterface.GetThemeIcon("MainPlay", "EditorIcons");
 		_playSceneIcon = editorInterface.GetThemeIcon("PlayScene", "EditorIcons");
@@ -54,7 +54,7 @@ public partial class RunBar : Control
 		_mysticPlayBtn = new Button();
 		_mysticPlayBtn.SetThemeTypeVariation(RunBarThemeType);
 		_mysticPlayBtn.SetToggleMode(true);
-		_mysticPlayBtn.SetFocusMode(Control.FocusModeEnum.None);
+		_mysticPlayBtn.SetFocusMode(FocusModeEnum.None);
 		_mysticPlayBtn.SetTooltipText("Export the server and then run the project.");
 		_mysticPlayBtn.SetButtonIcon(_playProjectIcon);
 		_mysticPlayBtn.SetShortcutInTooltip(true);
@@ -100,17 +100,16 @@ public partial class RunBar : Control
 	private void AddProjectSettings()
 	{
 		if (ProjectSettings.HasSetting(ClientSleepTimeSetting)) return;
-		
-		ProjectSettings.AddPropertyInfo(new Dictionary()
+
+		ProjectSettings.AddPropertyInfo(new Dictionary
 		{
-			{"name", "mystic/run/client_sleep_time"},
-			{"type", (int) Variant.Type.Int},
-			{"hint", (int) PropertyHint.None },
-			{"hint_string", "1000, 1500, 10000"}
+			{ "name", "mystic/run/client_sleep_time" },
+			{ "type", (int)Variant.Type.Int },
+			{ "hint", (int)PropertyHint.None },
+			{ "hint_string", "1000, 1500, 10000" }
 		});
-		
+
 		ProjectSettings.SetSetting(ClientSleepTimeSetting, 1500);
-			
 	}
 
 	/**
@@ -121,11 +120,9 @@ public partial class RunBar : Control
 	{
 		var buttons = new List<Button>();
 		foreach (var child in node.GetChildren())
-		{
 			if (child is Button btn && btn.GetThemeTypeVariation() == RunBarThemeType) buttons.Add(btn);
 			else
 				buttons.AddRange(GetRunBarButtons(child));
-		}
 
 		return buttons;
 	}

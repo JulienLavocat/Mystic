@@ -12,7 +12,6 @@ public partial class ClientManager : Node
 
 	public override void _EnterTree()
 	{
-		GD.Print("Started client manager");
 		Instance = this;
 	}
 
