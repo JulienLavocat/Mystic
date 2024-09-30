@@ -3,7 +3,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net7.0</TargetFramework>
         <EnableDynamicLoading>true</EnableDynamicLoading>
-        <RootNamespace>Mystic</RootNamespace>
+        <RootNamespace>MysticFramework</RootNamespace>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
@@ -33,5 +33,11 @@
         <Content Include="local\Tiltfile"/>
         <Content Include="Makefile"/>
         <Content Include="README.md"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="addons\imgui-godot\**"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Remove="addons\imgui-godot\**"/>
     </ItemGroup>
 </Project>

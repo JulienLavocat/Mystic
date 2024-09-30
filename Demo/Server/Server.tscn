@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dx2oa871jd3aa"]
 
-[ext_resource type="PackedScene" uid="uid://dfduxjpjtntow" path="res://GamerServer/Scenes/Server.tscn" id="1_hssp5"]
-[ext_resource type="Script" path="res://GamerServer/Features/PlayerMovement/PlayerInputsHandler.cs" id="2_otfvg"]
+[ext_resource type="PackedScene" uid="uid://dfduxjpjtntow" path="res://addons/MysticFramework/ServerLib/Scenes/Server.tscn" id="1_hssp5"]
+[ext_resource type="Script" path="res://addons/MysticFramework/ServerLib/Features/PlayerMovement/PlayerInputsHandler.cs" id="2_otfvg"]
 
 [node name="Main" type="Node3D"]
 

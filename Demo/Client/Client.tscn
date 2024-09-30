@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3 uid="uid://dr81mcco028gm"]
 
 [ext_resource type="Texture2D" uid="uid://ddtk4u47stx0" path="res://Demo/Client/Assets/Textures/Prototype/Dark/texture_01.png" id="3_fptwh"]
-[ext_resource type="PackedScene" uid="uid://buvma0htsytlb" path="res://Client/Scenes/Client.tscn" id="3_tir4p"]
+[ext_resource type="PackedScene" uid="uid://buvma0htsytlb" path="res://addons/MysticFramework/ClientLib/Scenes/Client.tscn" id="3_tir4p"]
 [ext_resource type="PackedScene" uid="uid://ce03amy65u360" path="res://Demo/Client/Player.tscn" id="4_kgmvd"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3ej4s"]
@@ -30,10 +30,6 @@ mesh = SubResource("PlaneMesh_hbhu7")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
 shape = SubResource("BoxShape3D_sh8a4")
 
-[node name="Player" parent="." instance=ExtResource("4_kgmvd")]
-
-[node name="Client" parent="." instance=ExtResource("3_tir4p")]
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_rj8b0")
 camera_attributes = SubResource("CameraAttributesPractical_ueg1m")
@@ -41,3 +37,7 @@ compositor = SubResource("Compositor_7i454")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.367638, 0.919474, 0.13932, 0.337646, -0.271561, 0.901249, 0.866509, -0.284292, -0.410293, 0, 146.359, -94.6691)
+
+[node name="ClientManager" parent="." instance=ExtResource("3_tir4p")]
+
+[node name="Player" parent="." instance=ExtResource("4_kgmvd")]
