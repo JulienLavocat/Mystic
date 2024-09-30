@@ -3,15 +3,11 @@ load('ext://restart_process', 'docker_build_with_restart')
 docker_build_with_restart(
     "localhost:5005/mystic/gs",
     "..",
+    only=["builds/server/server.x86_64"],
     dockerfile='Dockerfile',
-    ignore=["Client/", "local/", ".godot/", "Demo/Client/", "**/*.tscn-*"],
-    entrypoint="./start.sh godot --headless server",
+    entrypoint="./start.sh ./server.x86_64 server",
     live_update=[
-        sync("../addons", "/app/"),
-        sync("../GameServer", "/app/"),
-        sync("../Shared", "/app/"),
-        sync("../Demo/Server", "/app/"),
-        run("cd /app && dotnet build -p:GodotTargetPlatform=linuxbsd -c Debug"),
+        sync("../builds/server/server.x86_64", "/app/"),
         run('/app/restart.sh')
     ],
 )

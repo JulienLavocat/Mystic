@@ -33,7 +33,4 @@
         <Content Include="Makefile"/>
         <Content Include="README.md"/>
     </ItemGroup>
-    <ItemGroup>
-        <Folder Include="addons\mystic\"/>
-    </ItemGroup>
 </Project>
