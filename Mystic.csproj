@@ -21,6 +21,7 @@
     <ItemGroup>
         <Content Include=".dockerignore"/>
         <Content Include="addons.jsonc"/>
+        <Content Include="addons\MysticFramework\plugin.cfg"/>
         <Content Include="Dockerfile"/>
         <Content Include="local\cluster.yaml"/>
         <Content Include="local\Dockerfile"/>

@@ -8,5 +8,8 @@
 # in a variety of ways that may or may not trigger warnings based on your
 # own editorconfig or IDE settings.
 
-[*.cs]
+[imgui-godot/*]
 generated_code = true
+
+[mystic/*.cs]
+generated_code = false

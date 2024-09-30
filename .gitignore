@@ -2,5 +2,6 @@
 .godot/
 addons/*
 !addons/.editorconfig
+!addons/MysticFramework
 .addons/*
 builds
